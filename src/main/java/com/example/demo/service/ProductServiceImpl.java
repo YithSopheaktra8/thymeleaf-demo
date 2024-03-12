@@ -20,21 +20,32 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product findById(Integer id) {
-        return productRepository.findById(id);
+        return productRepository.getProducts()
+                .stream()
+                .filter(product -> product.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public void addProduct(Product product) {
-        productRepository.addProduct(product);
+        productRepository.getProducts().add(product);
     }
 
     @Override
     public void deleteProductById(Integer id) {
-        productRepository.deleteProductById(id);
+        productRepository.getProducts()
+                .removeIf(product -> product.getId().equals(id));
     }
 
     @Override
     public void updateProduct(Product product) {
-        productRepository.updateProduct(product);
+        productRepository.getProducts()
+                .stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .forEach(p -> {
+                    p.setName(product.getName());
+                    p.setPrice(product.getPrice());
+                });
     }
 }
