@@ -37,10 +37,18 @@ public class ProductController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateProduct(@PathVariable("id") Integer id) {
-        Product product = new Product(id,"Hanuman", 3.0);
-        productService.updateProduct(product);
+    public String updateProduct(@PathVariable("id") Integer id, Model model) {
+        Product foundProduct = productService.findAll().stream()
+                .filter(product -> product.getId().equals(id)).findFirst().orElse(null);
+        System.out.println(foundProduct.toString());
+        model.addAttribute("product", foundProduct);
         return "update";
+    }
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute("product") Product product) {
+        System.out.println(product.toString());
+        productService.updateProduct(product);
+        return "redirect:/";
     }
 
     @GetMapping("/create")
