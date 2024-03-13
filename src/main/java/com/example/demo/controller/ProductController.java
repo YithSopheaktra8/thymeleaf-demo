@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,8 +44,12 @@ public class ProductController {
     }
 
     @GetMapping("/create")
-    public String addProduct() {
-        Product product = new Product(7,"asdasd", 123.0);
+    public String addProduct(Model model) {
+        Product product = Product.builder()
+                .name("Hanuman")
+                .price(3.0)
+                .build();
+        model.addAttribute("product",product);
         productService.addProduct(product);
         return "create";
     }

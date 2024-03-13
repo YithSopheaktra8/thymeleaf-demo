@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void addProduct(Product product) {
+        List<Product> products = productRepository.getProducts();
+        Product lastProduct = products.stream().reduce((first, second) -> second).orElse(null);
+        product.setId(lastProduct.getId() + 1);
         productRepository.getProducts().add(product);
     }
 
