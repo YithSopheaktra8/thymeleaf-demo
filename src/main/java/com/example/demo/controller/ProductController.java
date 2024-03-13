@@ -38,9 +38,7 @@ public class ProductController {
 
     @GetMapping("/update/{id}")
     public String updateProduct(@PathVariable("id") Integer id, Model model) {
-        Product foundProduct = productService.findAll().stream()
-                .filter(product -> product.getId().equals(id)).findFirst().orElse(null);
-        System.out.println(foundProduct.toString());
+        Product foundProduct = productService.findById(id);
         model.addAttribute("product", foundProduct);
         return "update";
     }
