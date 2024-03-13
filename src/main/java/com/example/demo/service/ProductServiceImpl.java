@@ -31,15 +31,23 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void addProduct(Product product) {
         List<Product> products = productRepository.getProducts();
-        Product lastProduct = products.stream().reduce((first, second) -> second).orElse(null);
+        Product lastProduct = new Product();
+        if(products.size() > 0) {
+            lastProduct = products.get(products.size() - 1);
+        }
         product.setId(lastProduct.getId() + 1);
         productRepository.getProducts().add(product);
     }
 
     @Override
     public void deleteProductById(Integer id) {
-        productRepository.getProducts()
-                .removeIf(product -> product.getId().equals(id));
+        List<Product> productList = productRepository.getProducts();
+        for(Product product : productList) {
+            if(product.getId().equals(id)) {
+                productList.remove(product);
+                break;
+            }
+        }
     }
 
     @Override

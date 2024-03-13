@@ -25,32 +25,35 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public String getProductById(Model model,@PathVariable Integer id) {
+    public String getProductById(Model model,@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
         return "product";
     }
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Integer id) {
+    public String deleteProduct(@PathVariable("id") Integer id) {
+        System.out.println(id);
         productService.deleteProductById(id);
         return "delete";
     }
 
     @GetMapping("/update/{id}")
-    public String updateProduct(@PathVariable Integer id) {
+    public String updateProduct(@PathVariable("id") Integer id) {
         Product product = new Product(id,"Hanuman", 3.0);
         productService.updateProduct(product);
         return "update";
     }
 
     @GetMapping("/create")
-    public String addProduct(Model model) {
-        Product product = Product.builder()
-                .name("Hanuman")
-                .price(3.0)
-                .build();
+    public String create(Model model) {
+        Product product = new Product();
         model.addAttribute("product",product);
-        productService.addProduct(product);
         return "create";
     }
+    @PostMapping("/create")
+    public String submit(@ModelAttribute("product") Product product) {
+        productService.addProduct(product);
+        return "redirect:/";
+    }
+
 }

@@ -17,7 +17,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr >
+    <tr th:if="${#lists.isEmpty(product)}">
+        <td colspan="3" class="text-center">
+            <h2 class="text-danger">No Product Found</h2>
+        </td>
+    </tr>
+    <tr th:if="${not #lists.isEmpty(product)}">
         <td th:text="${product.id}"></td>
         <td th:text="${product.name}"></td>
         <td th:text="${product.price}"></td>
